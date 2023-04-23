@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 require("dotenv").config();
 
 const mailgun = new Mailgun(formData);
 const client = mailgun.client({
-  username: "Thibault TROFLEAU",
+  username: "Thibault T",
   key: process.env.MAILGUN_API_KEY,
 });
 
-router.post("/form", (req, res) => {
+router.post("/form", async (req, res) => {
   try {
     // console.log(req.body);
     if (
@@ -28,8 +29,8 @@ router.post("/form", (req, res) => {
         subject: `Test formulaire`,
         text: req.body.message,
       };
-      console.log(messageData);
-      const response = client.messages.create(
+
+      const response = await client.messages.create(
         process.env.MAILGUN_DOMAIN,
         messageData
       );
